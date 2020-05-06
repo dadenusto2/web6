@@ -30,7 +30,7 @@ else{
   }
   catch(PDOException $e){
     header('HTTP/l.1 401 Unauthorized');
-    header('WWW-Authenticate: Basic rеаlm=".login"'); 
+    header('WWW-Authenticate: Basic rеаlm="admin.php"'); 
     exit('');
   }
   if (!empty($row)){//строка с логином админа и полями таблицы
@@ -38,58 +38,61 @@ else{
     echo "<form action='' method='post'>\n";
     echo "<input type='hidden' name='SeenBefore' value='1' />\n";
     echo "<input type='hidden' name='OldAuth' value=\"" . htmlspecialchars($_SERVER['PHP_AUTH_USER']) . "\" />\n";
-    echo "<input type='submit' value='Авторизоваться повторно' />\n";
+    echo "<input type='hidden' name='save'/>\n";
+    echo "<input style='border-radius: 50px; margin:5px;' type='submit' value='Авторизоваться повторно как администратор'/>\n";
+    echo "</form></p>\n";
+    echo "<form action='index.php' method='post'>\n";
+    echo "<input type='submit' name='save' id='out' value='Создать нового пользователя'/>\n";
+    echo "<input type='submit' name='save' id='out' value='Войти как пользователь'/>\n";
     echo "</form></p>\n";
     $num=1;
     $messages[] = sprintf("
-    <head>
-      <meta charset='utf-8'>
-      <link rel='stylesheet' href = 'style.css'>
-    </head>
-    <table>
-      <th>num</th>
-      <th class='short'>login</th>
-      <th class='long'>password</th>
-      <th >name</th>
-      <th >email</th>
-      <th >date</th>
-      <th class='middle'>gender</th>
-      <th class='short'>limb</th>
-      <th class='middle'>super1</th>
-      <th class='middle'>super2</th>
-      <th class='middle'>super3</th>
-      <th class='long'>message</th>
-      <th class='middle'>checker</th>
-      <th class='middle'>Удалить</th>
-    </table>
+      <head>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' href = 'style.css'>
+        <title>Администратор web6</title>
+      </head>
+      <table>
+      <tr>
+        <th>num</th>
+        <th class='short'>login</th>
+        <th class='long'>password</th>
+        <th >name</th>
+        <th >email</th>
+        <th >date</th>
+        <th class='middle'>gender</th>
+        <th class='short'>limb</th>
+        <th class='middle'>super1</th>
+        <th class='middle'>super2</th>
+        <th class='middle'>super3</th>
+        <th class='long'>message</th>
+        <th class='middle'>checker</th>
+        <th class='middle'>Удалить</th>
+      </tr>
     ");
     //строки из таблицы anketa
     foreach($db->query('SELECT * FROM anketa') as $row){
       $messages[] = sprintf("
-      <head>
-        <meta charset='utf-8'>
-        <link rel='stylesheet' href = 'style.css'>
-      </head>
-      <table>
-        <td>%s</td>
-        <td class='short'>%s</td>
-        <td class='long'>%s</td>
-        <td >%s</td>
-        <td >%s</td>
-        <td >%s</td>
-        <td class='middle'>%s</td>
-        <td class='short'>%s</td>
-        <td class='middle'>%s</td>
-        <td class='middle'>%s</td>
-        <td class='middle'>%s</td>
-        <td class='long'>%s</td>
-        <td class='middle'>%s</td>
-        <td class='middle'>
-          <form method='POST' action='delete.php'>
-            <input type='submit' name='save' value='%s' />
-          </form>
-        </td>
-      </table>
+        <tr>
+          <td>%s</td>
+          <td class='short'>%s</td>
+          <td class='long'>%s</td>
+          <td >%s</td>
+          <td >%s</td>
+          <td >%s</td>
+          <td class='middle'>%s</td>
+          <td class='short'>%s</td>
+          <td class='middle'>%s</td>
+          <td class='middle'>%s</td>
+          <td class='middle'>%s</td>
+          <td class='long'>%s</td>
+          <td class='middle'>%s</td>
+          <td class='middle'>
+            <form method='POST' action='delete.php'>
+              <input type='submit' name='save' value='%s' />
+            </form>
+          </td>
+        </tr>
       ",
       strip_tags($num),
       strip_tags($row['login']),
@@ -108,6 +111,7 @@ else{
       );
       $num=$num+1;
     }
+    $messages[] = sprintf("</table>");
     if (!empty($messages)) {
       print('<div id="messages">');
       // Выводим все сообщения.

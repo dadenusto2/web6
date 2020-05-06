@@ -31,3 +31,17 @@ th:first-child, td:first-child {
 .middle{
     width: 60;
 }
+#content{
+    outline: none;
+    font-family: 'Uni Sans Semibold' ;
+    margin: auto auto;
+    background-color: #F0F8FF;
+    text-align: center;
+}
+#inName, #inEmail, #inMessage, #inDate, #login, #pass, #in, #ok, #out{ 
+    border-radius: 50px;
+    margin:5px;
+}
+a{
+    color: #703bfd !important;
+}
