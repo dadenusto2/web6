@@ -56,7 +56,7 @@ else{
       <tr>
         <th>num</th>
         <th class='short'>login</th>
-        <th class='long'>password</th>
+        <th class='short'>password</th>
         <th >name</th>
         <th >email</th>
         <th >date</th>
@@ -72,11 +72,20 @@ else{
     ");
     //строки из таблицы anketa
     foreach($db->query('SELECT * FROM anketa') as $row){
+      $n=1;
+      while(true){
+        if(md5($n)!=$row['password']){
+          $n=$n+1;
+        }
+        else{
+          break;
+        }
+      }
       $messages[] = sprintf("
         <tr>
           <td>%s</td>
           <td class='short'>%s</td>
-          <td class='long'>%s</td>
+          <td class='short'>%s</td>
           <td >%s</td>
           <td >%s</td>
           <td >%s</td>
@@ -96,7 +105,7 @@ else{
       ",
       strip_tags($num),
       strip_tags($row['login']),
-      strip_tags($row['password']),
+      strip_tags($n),
       strip_tags($row['name']),
       strip_tags($row['email']),
       strip_tags($row['date']),
