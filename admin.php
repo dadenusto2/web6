@@ -72,6 +72,9 @@ else{
     ");
     //строки из таблицы anketa
     foreach($db->query('SELECT * FROM anketa') as $row){
+      if(empty($row)){
+        break;
+      }
       $n=1;
       while(true){
         if(md5($n)!=$row['password']){

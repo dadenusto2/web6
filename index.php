@@ -107,17 +107,24 @@ $messages = array();
     // TODO: загрузить данные пользователя из БД  
     $db = new PDO('mysql:host=localhost;dbname=u20295', 'u20295', '7045626');
     try{
-    	$row=$db->query("SELECT * FROM anketa where login='".$_SESSION['login']."'")->fetch();
-    	$values['inName'] =strip_tags($row['name']);
-    	$values['inEmail'] = strip_tags($row['email']);
-    	$values['inDate'] = strip_tags($row['date']);
-    	$values['inGender'] = strip_tags($row['gender']);
-    	$values['inLimb'] = strip_tags($row['limb']);
-    	$values['inSup1'] =strip_tags($row['super1']);
-    	$values['inSup2'] = strip_tags($row['super2']);
-    	$values['inSup3'] = strip_tags($row['super3']);
-      $values['inMessage'] = strip_tags($row['message']);
-   		$values['checker'] = strip_tags($row['checker']);
+      $row=$db->query("SELECT * FROM anketa where login='".$_SESSION['login']."'")->fetch();
+        if(!empty($row)){
+        $values['inName'] =strip_tags($row['name']);
+        $values['inEmail'] = strip_tags($row['email']);
+        $values['inDate'] = strip_tags($row['date']);
+        $values['inGender'] = strip_tags($row['gender']);
+        $values['inLimb'] = strip_tags($row['limb']);
+        $values['inSup1'] =strip_tags($row['super1']);
+        $values['inSup2'] = strip_tags($row['super2']);
+        $values['inSup3'] = strip_tags($row['super3']);
+        $values['inMessage'] = strip_tags($row['message']);
+        $values['checker'] = strip_tags($row['checker']);
+      }
+      else{
+        $messages[] = sprintf("Пользователь с логином <strong>%s</strong> был удален, создайте новый профиль или зайдите под существующим",
+        strip_tags($_COOKIE['login']));
+        header('Location: index.php');
+      }
     }
 		catch(PDOException $e){}
 		$db = null;
